@@ -28,3 +28,13 @@ transformers = [
   "transformers>=4.40,<6",
 ]
 dev = [
+  "build>=1.2",
+]
+
+[project.scripts]
+music-emotion = "music_emotion.cli:main"
+
+[project.urls]
+Repository = "https://github.com/MK-523/NLP-music-sentimentanalysis"
+
+[tool.setuptools.packages.find]
