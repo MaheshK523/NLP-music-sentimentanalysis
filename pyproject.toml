@@ -38,3 +38,7 @@ music-emotion = "music_emotion.cli:main"
 Repository = "https://github.com/MK-523/NLP-music-sentimentanalysis"
 
 [tool.setuptools.packages.find]
+include = ["music_emotion*"]
+
+[tool.setuptools.package-data]
+music_emotion = ["py.typed"]
