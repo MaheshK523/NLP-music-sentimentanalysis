@@ -18,3 +18,13 @@ python -m pip install -e .
 
 music-emotion analyze examples/sample_songs.csv \
   --output output/analysis.csv \
+  --report-dir output/report
+```
+
+Open `output/report/report.html` to explore the aggregate score profile and
+per-song results. The report directory also contains Markdown and machine-
+readable JSON summaries.
+
+JSONL works in both directions:
+
+```bash
