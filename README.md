@@ -28,3 +28,13 @@ readable JSON summaries.
 JSONL works in both directions:
 
 ```bash
+music-emotion analyze examples/sample_songs.jsonl \
+  --output output/analysis.jsonl
+
+music-emotion report output/analysis.jsonl \
+  --output-dir output/rebuilt-report
+```
+
+## Input and output contract
+
+Every input record must contain non-empty string values for:
