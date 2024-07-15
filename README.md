@@ -38,3 +38,13 @@ music-emotion report output/analysis.jsonl \
 ## Input and output contract
 
 Every input record must contain non-empty string values for:
+
+| Field | Meaning |
+|---|---|
+| `title` | Song or text title |
+| `artist` | Artist, author, or dataset attribution |
+| `lyrics` | Text to analyze |
+
+Additional fields are preserved. Malformed JSON, missing CSV headers, duplicate
+columns, blank required values, and non-string JSON fields fail with row-aware
+messages.
