@@ -48,3 +48,13 @@ Every input record must contain non-empty string values for:
 Additional fields are preserved. Malformed JSON, missing CSV headers, duplicate
 columns, blank required values, and non-string JSON fields fail with row-aware
 messages.
+
+Outputs add:
+
+| Field | Encoding |
+|---|---|
+| `dominant_emotions` | JSON array; also JSON-encoded inside CSV |
+| `emotion_scores` | JSON object with normalized scores; JSON-encoded inside CSV |
+| `analysis_backend` | `lexicon` or `transformers` |
+| `analysis_model` | Backend/model identifier |
+| `chunk_count` | Number of chunks included in aggregation |
