@@ -58,3 +58,13 @@ Outputs add:
 | `analysis_backend` | `lexicon` or `transformers` |
 | `analysis_model` | Backend/model identifier |
 | `chunk_count` | Number of chunks included in aggregation |
+
+Python dictionary representations are never written into interchange files.
+
+## Backends
+
+### Deterministic offline baseline
+
+`--backend lexicon` is the default. It uses an inspectable English emotion
+lexicon, simple negation/intensifier handling, word-aware chunking, and weighted
+aggregation. It is useful for reproducible demos, integration tests, and a
