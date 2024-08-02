@@ -68,3 +68,13 @@ Python dictionary representations are never written into interchange files.
 `--backend lexicon` is the default. It uses an inspectable English emotion
 lexicon, simple negation/intensifier handling, word-aware chunking, and weighted
 aggregation. It is useful for reproducible demos, integration tests, and a
+transparent baseline. It is not a learned state-of-the-art classifier.
+
+```bash
+music-emotion analyze songs.csv -o analysis.csv \
+  --backend lexicon --threshold 0.25 --chunk-size 256
+```
+
+### Optional Transformers inference
+
+Transformers and PyTorch are deliberately optional:
