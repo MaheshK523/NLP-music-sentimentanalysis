@@ -78,3 +78,13 @@ music-emotion analyze songs.csv -o analysis.csv \
 ### Optional Transformers inference
 
 Transformers and PyTorch are deliberately optional:
+
+```bash
+python -m pip install -e '.[transformers]'
+
+music-emotion analyze songs.csv -o analysis.jsonl \
+  --backend transformers \
+  --model j-hartmann/emotion-english-distilroberta-base \
+  --allow-model-download
+```
+
