@@ -88,3 +88,13 @@ music-emotion analyze songs.csv -o analysis.jsonl \
   --allow-model-download
 ```
 
+Without `--allow-model-download`, only already-cached model files may be used.
+Transformer lyrics are split with the selected model's tokenizer rather than a
+character or whitespace approximation. See
+[`docs/MODELS_AND_DATA_RIGHTS.md`](docs/MODELS_AND_DATA_RIGHTS.md) before using
+third-party lyrics or checkpoints.
+
+## Architecture
+
+```text
+CSV / JSONL
