@@ -98,3 +98,13 @@ third-party lyrics or checkpoints.
 
 ```text
 CSV / JSONL
+    -> schema validation
+    -> backend-aware chunking
+    -> lexicon or Transformers inference
+    -> token-weighted score aggregation
+    -> JSON-safe CSV / JSONL
+    -> HTML + Markdown + JSON report
+```
+
+The package keeps I/O, chunking, inference, aggregation, and reporting separate
+so backends can be tested without downloading a model.
