@@ -108,3 +108,13 @@ CSV / JSONL
 
 The package keeps I/O, chunking, inference, aggregation, and reporting separate
 so backends can be tested without downloading a model.
+
+## Development
+
+```bash
+python -m unittest discover -s tests -v
+python -m build
+```
+
+CI runs the offline end-to-end workflow on Python 3.10–3.12 and builds both a
+wheel and source distribution. It never downloads a model.
