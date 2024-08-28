@@ -118,3 +118,13 @@ python -m build
 
 CI runs the offline end-to-end workflow on Python 3.10–3.12 and builds both a
 wheel and source distribution. It never downloads a model.
+
+## Scope and limitations
+
+- No accuracy, calibration, or human-agreement result is claimed.
+- The bundled baseline is English-focused and intentionally small.
+- The optional checkpoint was built by its upstream author; this repository
+  only loads it for inference.
+- Chunk aggregation preserves coverage but not narrative order across chunks.
+- Text emotion and musical emotion can differ because audio, harmony, rhythm,
+  performance, and cultural context are outside the input.
