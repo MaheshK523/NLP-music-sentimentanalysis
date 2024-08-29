@@ -128,3 +128,13 @@ wheel and source distribution. It never downloads a model.
 - Chunk aggregation preserves coverage but not narrative order across chunks.
 - Text emotion and musical emotion can differ because audio, harmony, rhythm,
   performance, and cultural context are outside the input.
+
+The detailed behavior and evaluation checklist are in
+[`docs/METHODOLOGY.md`](docs/METHODOLOGY.md).
+
+## Repository map
+
+| Path | Purpose |
+|---|---|
+| `music_emotion/` | Maintained library and CLI |
+| `tests/` | Offline unit and end-to-end coverage |
