@@ -138,3 +138,11 @@ The detailed behavior and evaluation checklist are in
 |---|---|
 | `music_emotion/` | Maintained library and CLI |
 | `tests/` | Offline unit and end-to-end coverage |
+| `examples/` | Rights-documented synthetic CSV/JSONL fixtures |
+| `docs/` | Methodology and model/data rights |
+| `legacy/` | Original scripts preserved verbatim with commit provenance |
+
+## License
+
+Code and repository-created synthetic fixtures are available under the MIT
+license. Third-party models and user-supplied datasets retain their own terms.
