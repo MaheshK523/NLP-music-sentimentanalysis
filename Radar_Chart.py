@@ -18,3 +18,12 @@ def plot_song_radar(song_title, mood_scores, save_dir="mood_charts"):
     ax.set_yticks([0.2, 0.4, 0.6, 0.8])
     ax.set_title(f"Mood profile: {song_title}", size=14, weight='bold')
     filename = os.path.join(save_dir, f"{re.sub(r'[^a-zA-Z0-9]', '_', song_title)}.png")
+    plt.savefig(filename)
+    plt.close()
+    print(f"saved radar chart for {song_title} -> {filename}")
+
+#generate and save radar chart for every song
+for idx in range(len(df)):
+    title = df.iloc[idx]['title']
+    scores = df.iloc[idx]['mood_scores']
+    plot_song_radar(title, scores)
