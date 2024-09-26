@@ -8,3 +8,4 @@ build/
 dist/
 output/
 reports/
+.DS_Store
