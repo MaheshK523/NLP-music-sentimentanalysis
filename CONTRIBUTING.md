@@ -8,3 +8,4 @@
    caches. Synthetic fixtures must be labeled as such.
 
 Changes to the lexicon or aggregation policy alter model behavior. Update the
+model name/version, methodology document, and tests together.
