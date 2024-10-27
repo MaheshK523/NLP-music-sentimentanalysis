@@ -28,3 +28,13 @@ def word_chunks(text: str, max_words: int) -> list[TextChunk]:
         TextChunk(text=" ".join(words[start : start + max_words]), weight=len(words[start : start + max_words]))
         for start in range(0, len(words), max_words)
     ]
+
+
+def tokenizer_chunks(tokenizer: Any, text: str, max_tokens: int) -> list[TextChunk]:
+    """Split text on model token IDs while reserving required special tokens."""
+    if max_tokens < 2:
+        raise ValueError("max_tokens must be at least 2")
+    special_tokens = 0
+    if hasattr(tokenizer, "num_special_tokens_to_add"):
+        special_tokens = int(tokenizer.num_special_tokens_to_add(pair=False))
+    payload_size = max_tokens - special_tokens
