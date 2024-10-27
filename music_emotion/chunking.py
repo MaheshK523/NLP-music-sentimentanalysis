@@ -38,3 +38,13 @@ def tokenizer_chunks(tokenizer: Any, text: str, max_tokens: int) -> list[TextChu
     if hasattr(tokenizer, "num_special_tokens_to_add"):
         special_tokens = int(tokenizer.num_special_tokens_to_add(pair=False))
     payload_size = max_tokens - special_tokens
+    if payload_size < 1:
+        raise ValueError("max_tokens is too small for the tokenizer's special tokens")
+
+    token_ids = list(tokenizer.encode(text, add_special_tokens=False))
+    if not token_ids:
+        return [TextChunk(text="", weight=1)]
+
+    chunks: list[TextChunk] = []
+    for start in range(0, len(token_ids), payload_size):
+        ids = token_ids[start : start + payload_size]
