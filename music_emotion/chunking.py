@@ -48,3 +48,6 @@ def tokenizer_chunks(tokenizer: Any, text: str, max_tokens: int) -> list[TextChu
     chunks: list[TextChunk] = []
     for start in range(0, len(token_ids), payload_size):
         ids = token_ids[start : start + payload_size]
+        decoded = tokenizer.decode(ids, skip_special_tokens=True).strip()
+        chunks.append(TextChunk(text=decoded, weight=len(ids)))
+    return chunks
