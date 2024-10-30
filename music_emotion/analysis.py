@@ -18,3 +18,13 @@ def _validated_scores(scores: Mapping[str, float]) -> dict[str, float]:
         if not label or not math.isfinite(score) or score < 0:
             raise DataValidationError("backend returned an invalid label or score")
         normalized[label] = normalized.get(label, 0.0) + score
+    total = sum(normalized.values())
+    if total <= 0:
+        raise DataValidationError("backend score total must be positive")
+    return {label: value / total for label, value in sorted(normalized.items())}
+
+
+def select_dominant_emotions(scores: Mapping[str, float], threshold: float) -> tuple[str, ...]:
+    if not 0.0 <= threshold <= 1.0:
+        raise DataValidationError("threshold must be between 0 and 1")
+    validated = _validated_scores(scores)
