@@ -28,3 +28,13 @@ def select_dominant_emotions(scores: Mapping[str, float], threshold: float) -> t
     if not 0.0 <= threshold <= 1.0:
         raise DataValidationError("threshold must be between 0 and 1")
     validated = _validated_scores(scores)
+    selected = [label for label, score in validated.items() if score >= threshold]
+    if not selected:
+        selected = [min(validated, key=lambda label: (-validated[label], label))]
+    return tuple(sorted(selected, key=lambda label: (-validated[label], label)))
+
+
+def analyze_records(
+    records: Iterable[SongRecord],
+    backend: EmotionBackend,
+    *,
