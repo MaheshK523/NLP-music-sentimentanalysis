@@ -38,3 +38,13 @@ def analyze_records(
     records: Iterable[SongRecord],
     backend: EmotionBackend,
     *,
+    threshold: float = 0.25,
+    chunk_size: int = 256,
+) -> Iterator[AnalysisResult]:
+    if chunk_size < 2:
+        raise DataValidationError("chunk size must be at least 2")
+    for song in records:
+        prediction = backend.predict(song.lyrics, chunk_size=chunk_size)
+        scores = _validated_scores(prediction.scores)
+        yield AnalysisResult(
+            song=song,
