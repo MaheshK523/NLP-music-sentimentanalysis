@@ -48,3 +48,9 @@ def analyze_records(
         scores = _validated_scores(prediction.scores)
         yield AnalysisResult(
             song=song,
+            dominant_emotions=select_dominant_emotions(scores, threshold),
+            emotion_scores=scores,
+            backend=backend.name,
+            model=backend.model_name,
+            chunk_count=prediction.chunk_count,
+        )
