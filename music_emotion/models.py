@@ -8,3 +8,13 @@ from typing import Any, Mapping
 class SongRecord:
     title: str
     artist: str
+    lyrics: str
+    extra: Mapping[str, Any] = field(default_factory=dict)
+    source_row: int | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class BackendPrediction:
+    scores: Mapping[str, float]
+    chunk_count: int
+
