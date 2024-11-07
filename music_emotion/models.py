@@ -18,3 +18,12 @@ class BackendPrediction:
     scores: Mapping[str, float]
     chunk_count: int
 
+
+@dataclass(frozen=True, slots=True)
+class AnalysisResult:
+    song: SongRecord
+    dominant_emotions: tuple[str, ...]
+    emotion_scores: Mapping[str, float]
+    backend: str
+    model: str
+    chunk_count: int
