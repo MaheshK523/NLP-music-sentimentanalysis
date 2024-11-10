@@ -8,3 +8,13 @@ from pathlib import Path
 from typing import Any, TextIO
 
 from .errors import DataValidationError
+from .models import AnalysisResult, SongRecord
+
+
+INPUT_FIELDS = ("title", "artist", "lyrics")
+RESULT_FIELDS = (
+    "dominant_emotions",
+    "emotion_scores",
+    "analysis_backend",
+    "analysis_model",
+    "chunk_count",
