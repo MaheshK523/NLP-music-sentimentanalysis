@@ -18,3 +18,13 @@ RESULT_FIELDS = (
     "analysis_backend",
     "analysis_model",
     "chunk_count",
+)
+RESERVED_FIELDS = set(INPUT_FIELDS + RESULT_FIELDS)
+
+
+def infer_format(path: str | Path, selected: str = "auto") -> str:
+    if selected != "auto":
+        return selected
+    suffix = Path(path).suffix.casefold()
+    if suffix == ".csv":
+        return "csv"
