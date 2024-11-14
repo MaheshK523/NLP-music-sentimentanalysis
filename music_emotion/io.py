@@ -28,3 +28,13 @@ def infer_format(path: str | Path, selected: str = "auto") -> str:
     suffix = Path(path).suffix.casefold()
     if suffix == ".csv":
         return "csv"
+    if suffix in {".jsonl", ".ndjson"}:
+        return "jsonl"
+    raise DataValidationError("could not infer format; use a .csv/.jsonl path or pass an explicit format")
+
+
+def _validate_song(row: Mapping[str, Any], source_row: int) -> SongRecord:
+    missing = [field for field in INPUT_FIELDS if field not in row]
+    if missing:
+        raise DataValidationError(f"row {source_row}: missing required field(s): {', '.join(missing)}")
+
