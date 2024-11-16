@@ -38,3 +38,13 @@ def _validate_song(row: Mapping[str, Any], source_row: int) -> SongRecord:
     if missing:
         raise DataValidationError(f"row {source_row}: missing required field(s): {', '.join(missing)}")
 
+    values: dict[str, str] = {}
+    for field in INPUT_FIELDS:
+        value = row[field]
+        if not isinstance(value, str):
+            raise DataValidationError(f"row {source_row}: {field!r} must be a string")
+        if not value.strip():
+            raise DataValidationError(f"row {source_row}: {field!r} cannot be blank")
+        values[field] = value.strip() if field != "lyrics" else value
+
+    extra = {str(key): value for key, value in row.items() if key not in INPUT_FIELDS and key is not None}
