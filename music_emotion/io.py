@@ -48,3 +48,13 @@ def _validate_song(row: Mapping[str, Any], source_row: int) -> SongRecord:
         values[field] = value.strip() if field != "lyrics" else value
 
     extra = {str(key): value for key, value in row.items() if key not in INPUT_FIELDS and key is not None}
+    return SongRecord(**values, extra=extra, source_row=source_row)
+
+
+def _load_csv(handle: TextIO) -> list[SongRecord]:
+    reader = csv.DictReader(handle)
+    if reader.fieldnames is None:
+        raise DataValidationError("CSV input must include a header row")
+    if len(reader.fieldnames) != len(set(reader.fieldnames)):
+        raise DataValidationError("CSV input contains duplicate column names")
+    missing = [field for field in INPUT_FIELDS if field not in reader.fieldnames]
