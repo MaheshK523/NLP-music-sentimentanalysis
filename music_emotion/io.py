@@ -58,3 +58,13 @@ def _load_csv(handle: TextIO) -> list[SongRecord]:
     if len(reader.fieldnames) != len(set(reader.fieldnames)):
         raise DataValidationError("CSV input contains duplicate column names")
     missing = [field for field in INPUT_FIELDS if field not in reader.fieldnames]
+    if missing:
+        raise DataValidationError(f"CSV header is missing: {', '.join(missing)}")
+    records = [_validate_song(row, source_row=index) for index, row in enumerate(reader, start=2)]
+    if not records:
+        raise DataValidationError("input dataset contains no songs")
+    return records
+
+
+def _load_jsonl(handle: TextIO) -> list[SongRecord]:
+    records: list[SongRecord] = []
