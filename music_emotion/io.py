@@ -68,3 +68,13 @@ def _load_csv(handle: TextIO) -> list[SongRecord]:
 
 def _load_jsonl(handle: TextIO) -> list[SongRecord]:
     records: list[SongRecord] = []
+    for line_number, line in enumerate(handle, start=1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise DataValidationError(f"line {line_number}: invalid JSON: {exc.msg}") from exc
+        if not isinstance(row, dict):
+            raise DataValidationError(f"line {line_number}: each JSONL value must be an object")
+        records.append(_validate_song(row, source_row=line_number))
