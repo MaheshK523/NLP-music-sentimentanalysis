@@ -78,3 +78,13 @@ def _load_jsonl(handle: TextIO) -> list[SongRecord]:
         if not isinstance(row, dict):
             raise DataValidationError(f"line {line_number}: each JSONL value must be an object")
         records.append(_validate_song(row, source_row=line_number))
+    if not records:
+        raise DataValidationError("input dataset contains no songs")
+    return records
+
+
+def load_songs(path: str | Path, *, input_format: str = "auto") -> list[SongRecord]:
+    source = Path(path)
+    selected = infer_format(source, input_format)
+    try:
+        with source.open("r", encoding="utf-8-sig", newline="") as handle:
