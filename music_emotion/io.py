@@ -88,3 +88,13 @@ def load_songs(path: str | Path, *, input_format: str = "auto") -> list[SongReco
     selected = infer_format(source, input_format)
     try:
         with source.open("r", encoding="utf-8-sig", newline="") as handle:
+            return _load_csv(handle) if selected == "csv" else _load_jsonl(handle)
+    except OSError as exc:
+        raise DataValidationError(f"could not read {source}: {exc}") from exc
+
+
+def _csv_value(value: Any) -> Any:
+    if isinstance(value, (dict, list, tuple, bool)) or value is None:
+        return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return value
+
