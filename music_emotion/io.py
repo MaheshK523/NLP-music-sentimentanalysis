@@ -98,3 +98,13 @@ def _csv_value(value: Any) -> Any:
         return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return value
 
+
+def result_mapping(result: AnalysisResult, *, json_native: bool) -> dict[str, Any]:
+    extra = {key: value for key, value in result.song.extra.items() if key not in RESERVED_FIELDS}
+    scores = {key: round(float(value), 10) for key, value in sorted(result.emotion_scores.items())}
+    dominant = list(result.dominant_emotions)
+    row: dict[str, Any] = {
+        "title": result.song.title,
+        "artist": result.song.artist,
+        "lyrics": result.song.lyrics,
+        **extra,
