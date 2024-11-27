@@ -108,3 +108,13 @@ def result_mapping(result: AnalysisResult, *, json_native: bool) -> dict[str, An
         "artist": result.song.artist,
         "lyrics": result.song.lyrics,
         **extra,
+        "dominant_emotions": dominant,
+        "emotion_scores": scores,
+        "analysis_backend": result.backend,
+        "analysis_model": result.model,
+        "chunk_count": result.chunk_count,
+    }
+    return row if json_native else {key: _csv_value(value) for key, value in row.items()}
+
+
+def _atomic_replace(path: Path, write: Any) -> None:
