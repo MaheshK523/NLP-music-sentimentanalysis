@@ -118,3 +118,13 @@ def result_mapping(result: AnalysisResult, *, json_native: bool) -> dict[str, An
 
 
 def _atomic_replace(path: Path, write: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.tmp")
+    try:
+        write(temporary)
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def write_results(
