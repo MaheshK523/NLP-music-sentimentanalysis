@@ -128,3 +128,13 @@ def _atomic_replace(path: Path, write: Any) -> None:
 
 
 def write_results(
+    results: Iterable[AnalysisResult],
+    path: str | Path,
+    *,
+    output_format: str = "auto",
+) -> int:
+    target = Path(path)
+    selected = infer_format(target, output_format)
+    materialized = list(results)
+    if not materialized:
+        raise DataValidationError("cannot write an empty analysis result")
