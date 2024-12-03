@@ -138,3 +138,13 @@ def write_results(
     materialized = list(results)
     if not materialized:
         raise DataValidationError("cannot write an empty analysis result")
+
+    if selected == "jsonl":
+        def write_jsonl(temporary: Path) -> None:
+            with temporary.open("w", encoding="utf-8", newline="\n") as handle:
+                for result in materialized:
+                    handle.write(json.dumps(result_mapping(result, json_native=True), ensure_ascii=False, sort_keys=True))
+                    handle.write("\n")
+
+        _atomic_replace(target, write_jsonl)
+        return len(materialized)
