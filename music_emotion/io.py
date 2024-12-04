@@ -148,3 +148,13 @@ def write_results(
 
         _atomic_replace(target, write_jsonl)
         return len(materialized)
+
+    mappings = [result_mapping(result, json_native=False) for result in materialized]
+    extra_fields = sorted(set().union(*(mapping.keys() for mapping in mappings)) - RESERVED_FIELDS)
+    fieldnames = [*INPUT_FIELDS, *extra_fields, *RESULT_FIELDS]
+
+    def write_csv(temporary: Path) -> None:
+        with temporary.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(mappings)
