@@ -158,3 +158,6 @@ def write_results(
             writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
             writer.writeheader()
             writer.writerows(mappings)
+
+    _atomic_replace(target, write_csv)
+    return len(materialized)
