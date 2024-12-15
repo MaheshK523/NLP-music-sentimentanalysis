@@ -8,3 +8,7 @@ __all__ = [
     "BackendPrediction",
     "SongRecord",
     "analyze_records",
+    "select_dominant_emotions",
+]
+
+__version__ = "0.1.0"
