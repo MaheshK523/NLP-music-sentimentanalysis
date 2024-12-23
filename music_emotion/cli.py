@@ -18,3 +18,13 @@ def _parser() -> argparse.ArgumentParser:
         description="Analyze lyric emotion with an offline baseline or an explicitly enabled Transformers model.",
     )
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    analyze = subparsers.add_parser("analyze", help="analyze a validated CSV or JSONL dataset")
+    analyze.add_argument("input", type=Path)
+    analyze.add_argument("-o", "--output", type=Path, required=True)
+    analyze.add_argument("--input-format", choices=("auto", "csv", "jsonl"), default="auto")
+    analyze.add_argument("--output-format", choices=("auto", "csv", "jsonl"), default="auto")
+    analyze.add_argument("--backend", choices=("lexicon", "transformers"), default="lexicon")
+    analyze.add_argument("--model", help="Hugging Face model ID for the Transformers backend")
+    analyze.add_argument(
