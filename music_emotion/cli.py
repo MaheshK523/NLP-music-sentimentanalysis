@@ -28,3 +28,13 @@ def _parser() -> argparse.ArgumentParser:
     analyze.add_argument("--backend", choices=("lexicon", "transformers"), default="lexicon")
     analyze.add_argument("--model", help="Hugging Face model ID for the Transformers backend")
     analyze.add_argument(
+        "--allow-model-download",
+        action="store_true",
+        help="allow the explicitly selected Transformers backend to download model files",
+    )
+    analyze.add_argument("--threshold", type=float, default=0.25)
+    analyze.add_argument("--chunk-size", type=int, default=256)
+    analyze.add_argument("--report-dir", type=Path, help="also write HTML, Markdown, and JSON summaries")
+
+    report = subparsers.add_parser("report", help="build reports from a prior analysis CSV or JSONL")
+    report.add_argument("input", type=Path)
