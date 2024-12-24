@@ -38,3 +38,13 @@ def _parser() -> argparse.ArgumentParser:
 
     report = subparsers.add_parser("report", help="build reports from a prior analysis CSV or JSONL")
     report.add_argument("input", type=Path)
+    report.add_argument("-o", "--output-dir", type=Path, required=True)
+    report.add_argument("--input-format", choices=("auto", "csv", "jsonl"), default="auto")
+    return parser
+
+
+def _run_analyze(args: argparse.Namespace) -> int:
+    if args.allow_model_download and args.backend != "transformers":
+        raise MusicEmotionError("--allow-model-download only applies to --backend transformers")
+    records = load_songs(args.input, input_format=args.input_format)
+    backend = create_backend(args.backend, model_name=args.model, allow_download=args.allow_model_download)
