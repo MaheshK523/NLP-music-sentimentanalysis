@@ -48,3 +48,13 @@ def _run_analyze(args: argparse.Namespace) -> int:
         raise MusicEmotionError("--allow-model-download only applies to --backend transformers")
     records = load_songs(args.input, input_format=args.input_format)
     backend = create_backend(args.backend, model_name=args.model, allow_download=args.allow_model_download)
+    results = list(
+        analyze_records(
+            records,
+            backend,
+            threshold=args.threshold,
+            chunk_size=args.chunk_size,
+        )
+    )
+    count = write_results(results, args.output, output_format=args.output_format)
+    print(f"Analyzed {count} song(s) with {backend.name}; wrote {args.output}")
