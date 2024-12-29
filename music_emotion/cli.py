@@ -68,3 +68,13 @@ def _run_report(args: argparse.Namespace) -> int:
     results = load_analysis_results(args.input, input_format=args.input_format)
     artifacts = generate_report(results, args.output_dir)
     print(f"Reported on {len(results)} song(s); wrote {artifacts.html}")
+    return 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = _parser()
+    args = parser.parse_args(argv)
+    try:
+        return _run_analyze(args) if args.command == "analyze" else _run_report(args)
+    except (MusicEmotionError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
