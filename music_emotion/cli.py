@@ -58,3 +58,13 @@ def _run_analyze(args: argparse.Namespace) -> int:
     )
     count = write_results(results, args.output, output_format=args.output_format)
     print(f"Analyzed {count} song(s) with {backend.name}; wrote {args.output}")
+    if args.report_dir:
+        artifacts = generate_report(results, args.report_dir)
+        print(f"Report: {artifacts.html}")
+    return 0
+
+
+def _run_report(args: argparse.Namespace) -> int:
+    results = load_analysis_results(args.input, input_format=args.input_format)
+    artifacts = generate_report(results, args.output_dir)
+    print(f"Reported on {len(results)} song(s); wrote {artifacts.html}")
