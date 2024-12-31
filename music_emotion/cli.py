@@ -78,3 +78,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _run_analyze(args) if args.command == "analyze" else _run_report(args)
     except (MusicEmotionError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
