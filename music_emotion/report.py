@@ -18,3 +18,13 @@ class ReportArtifacts:
     html: Path
     markdown: Path
     summary_json: Path
+
+
+def _parse_json_value(value: Any, expected: type, field: str, row: int | None) -> Any:
+    parsed = value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise DataValidationError(f"row {row}: {field} must contain valid JSON") from exc
+    if not isinstance(parsed, expected):
