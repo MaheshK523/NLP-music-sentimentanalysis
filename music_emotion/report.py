@@ -28,3 +28,13 @@ def _parse_json_value(value: Any, expected: type, field: str, row: int | None) -
         except json.JSONDecodeError as exc:
             raise DataValidationError(f"row {row}: {field} must contain valid JSON") from exc
     if not isinstance(parsed, expected):
+        raise DataValidationError(f"row {row}: {field} must be a JSON {expected.__name__}")
+    return parsed
+
+
+def load_analysis_results(path: str | Path, *, input_format: str = "auto") -> list[AnalysisResult]:
+    songs = load_songs(path, input_format=input_format)
+    results: list[AnalysisResult] = []
+    for song in songs:
+        missing = [field for field in ("dominant_emotions", "emotion_scores") if field not in song.extra]
+        if missing:
