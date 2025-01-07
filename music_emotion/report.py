@@ -38,3 +38,13 @@ def load_analysis_results(path: str | Path, *, input_format: str = "auto") -> li
     for song in songs:
         missing = [field for field in ("dominant_emotions", "emotion_scores") if field not in song.extra]
         if missing:
+            raise DataValidationError(f"row {song.source_row}: missing analysis field(s): {', '.join(missing)}")
+        dominant = _parse_json_value(song.extra["dominant_emotions"], list, "dominant_emotions", song.source_row)
+        scores = _parse_json_value(song.extra["emotion_scores"], dict, "emotion_scores", song.source_row)
+        if not dominant or not all(isinstance(label, str) and label.strip() for label in dominant):
+            raise DataValidationError(f"row {song.source_row}: dominant_emotions must contain labels")
+        clean_scores: dict[str, float] = {}
+        for label, value in scores.items():
+            try:
+                score = float(value)
+            except (TypeError, ValueError) as exc:
