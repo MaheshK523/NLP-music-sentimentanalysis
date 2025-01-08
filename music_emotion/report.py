@@ -48,3 +48,13 @@ def load_analysis_results(path: str | Path, *, input_format: str = "auto") -> li
             try:
                 score = float(value)
             except (TypeError, ValueError) as exc:
+                raise DataValidationError(f"row {song.source_row}: invalid score for {label!r}") from exc
+            if not math.isfinite(score) or not 0 <= score <= 1:
+                raise DataValidationError(f"row {song.source_row}: scores must be finite values from 0 to 1")
+            clean_scores[str(label)] = score
+        if not clean_scores:
+            raise DataValidationError(f"row {song.source_row}: emotion_scores cannot be empty")
+        try:
+            chunk_count = int(song.extra.get("chunk_count", 1))
+        except (TypeError, ValueError) as exc:
+            raise DataValidationError(f"row {song.source_row}: chunk_count must be an integer") from exc
