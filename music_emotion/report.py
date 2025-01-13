@@ -68,3 +68,13 @@ def load_analysis_results(path: str | Path, *, input_format: str = "auto") -> li
                 chunk_count=chunk_count,
             )
         )
+    return results
+
+
+def summarize(results: Iterable[AnalysisResult]) -> dict[str, Any]:
+    materialized = list(results)
+    if not materialized:
+        raise DataValidationError("cannot report on an empty result set")
+    dominant_counts: Counter[str] = Counter()
+    score_totals: defaultdict[str, float] = defaultdict(float)
+    for result in materialized:
