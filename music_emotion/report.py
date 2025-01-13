@@ -58,3 +58,13 @@ def load_analysis_results(path: str | Path, *, input_format: str = "auto") -> li
             chunk_count = int(song.extra.get("chunk_count", 1))
         except (TypeError, ValueError) as exc:
             raise DataValidationError(f"row {song.source_row}: chunk_count must be an integer") from exc
+        results.append(
+            AnalysisResult(
+                song=song,
+                dominant_emotions=tuple(dominant),
+                emotion_scores=clean_scores,
+                backend=str(song.extra.get("analysis_backend", "unknown")),
+                model=str(song.extra.get("analysis_model", "unknown")),
+                chunk_count=chunk_count,
+            )
+        )
