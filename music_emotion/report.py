@@ -88,3 +88,13 @@ def summarize(results: Iterable[AnalysisResult]) -> dict[str, Any]:
         "backend_counts": dict(sorted(Counter(result.backend for result in materialized).items())),
         "model_counts": dict(sorted(Counter(result.model for result in materialized).items())),
         "dominant_emotion_counts": dict(sorted(dominant_counts.items(), key=lambda item: (-item[1], item[0]))),
+        "average_emotion_scores": {label: round(score_totals[label] / len(materialized), 10) for label in labels},
+    }
+
+
+def _markdown(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
+    lines = [
+        "# Music emotion analysis report",
+        "",
+        f"Songs analyzed: **{summary['song_count']}**",
+        "",
