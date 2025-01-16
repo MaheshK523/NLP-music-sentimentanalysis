@@ -78,3 +78,13 @@ def summarize(results: Iterable[AnalysisResult]) -> dict[str, Any]:
     dominant_counts: Counter[str] = Counter()
     score_totals: defaultdict[str, float] = defaultdict(float)
     for result in materialized:
+        dominant_counts.update(result.dominant_emotions)
+        for label, score in result.emotion_scores.items():
+            score_totals[label] += float(score)
+    labels = sorted(score_totals)
+    return {
+        "schema_version": 1,
+        "song_count": len(materialized),
+        "backend_counts": dict(sorted(Counter(result.backend for result in materialized).items())),
+        "model_counts": dict(sorted(Counter(result.model for result in materialized).items())),
+        "dominant_emotion_counts": dict(sorted(dominant_counts.items(), key=lambda item: (-item[1], item[0]))),
