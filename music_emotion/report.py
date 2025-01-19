@@ -98,3 +98,13 @@ def _markdown(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
         "",
         f"Songs analyzed: **{summary['song_count']}**",
         "",
+        "## Dominant emotions",
+        "",
+        "| Emotion | Songs |",
+        "|---|---:|",
+    ]
+    lines.extend(f"| {label} | {count} |" for label, count in summary["dominant_emotion_counts"].items())
+    lines.extend(["", "## Average scores", "", "| Emotion | Mean score |", "|---|---:|"])
+    lines.extend(f"| {label} | {score:.3f} |" for label, score in summary["average_emotion_scores"].items())
+    lines.extend(["", "## Songs", "", "| Title | Artist | Dominant emotion(s) | Chunks |", "|---|---|---|---:|"])
+    for result in results:
