@@ -118,3 +118,13 @@ def _markdown(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
             "",
         ]
     )
+    return "\n".join(lines)
+
+
+def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
+    dominant_cards = "".join(
+        f'<div class="metric"><span>{html.escape(label.title())}</span><strong>{count}</strong></div>'
+        for label, count in summary["dominant_emotion_counts"].items()
+    )
+    average_bars = "".join(
+        "<div class=\"bar-row\"><span>{}</span><div class=\"track\"><i style=\"width:{:.2f}%\"></i></div><b>{:.3f}</b></div>".format(
