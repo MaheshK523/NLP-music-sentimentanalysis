@@ -108,3 +108,13 @@ def _markdown(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
     lines.extend(f"| {label} | {score:.3f} |" for label, score in summary["average_emotion_scores"].items())
     lines.extend(["", "## Songs", "", "| Title | Artist | Dominant emotion(s) | Chunks |", "|---|---|---|---:|"])
     for result in results:
+        title = result.song.title.replace("|", "\\|")
+        artist = result.song.artist.replace("|", "\\|")
+        lines.append(f"| {title} | {artist} | {', '.join(result.dominant_emotions)} | {result.chunk_count} |")
+    lines.extend(
+        [
+            "",
+            "> Scores describe the selected backend's output. They are not objective labels or clinical measurements.",
+            "",
+        ]
+    )
