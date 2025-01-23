@@ -128,3 +128,13 @@ def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
     )
     average_bars = "".join(
         "<div class=\"bar-row\"><span>{}</span><div class=\"track\"><i style=\"width:{:.2f}%\"></i></div><b>{:.3f}</b></div>".format(
+            html.escape(label.title()), score * 100, score
+        )
+        for label, score in summary["average_emotion_scores"].items()
+    )
+    rows = []
+    for result in results:
+        top_scores = sorted(result.emotion_scores.items(), key=lambda item: (-item[1], item[0]))[:3]
+        score_text = ", ".join(f"{label} {score:.2f}" for label, score in top_scores)
+        rows.append(
+            "<tr><td><strong>{}</strong><small>{}</small></td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
