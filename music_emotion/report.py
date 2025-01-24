@@ -138,3 +138,13 @@ def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
         score_text = ", ".join(f"{label} {score:.2f}" for label, score in top_scores)
         rows.append(
             "<tr><td><strong>{}</strong><small>{}</small></td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+                html.escape(result.song.title),
+                html.escape(result.song.artist),
+                html.escape(", ".join(result.dominant_emotions)),
+                html.escape(score_text),
+                result.chunk_count,
+            )
+        )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
