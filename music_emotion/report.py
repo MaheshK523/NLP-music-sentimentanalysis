@@ -148,3 +148,13 @@ def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
     return f"""<!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Music emotion analysis report</title>
+  <style>
+    :root{{--ink:#18212f;--muted:#627084;--card:#fff;--line:#dfe5ec;--accent:#6657d9;--bg:#f5f6fa}}
+    *{{box-sizing:border-box}} body{{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,sans-serif}}
+    main{{width:min(1040px,calc(100% - 32px));margin:48px auto}} h1{{font-size:clamp(2rem,5vw,3.5rem);margin:.2rem 0}}
+    .eyebrow{{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase}} .lede{{color:var(--muted);max-width:70ch}}
+    section{{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:22px 0;box-shadow:0 8px 26px #24304a0b}}
+    .metrics{{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}} .metric{{padding:16px;border-radius:12px;background:#f0efff}}
