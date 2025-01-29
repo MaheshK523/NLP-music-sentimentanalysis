@@ -158,3 +158,13 @@ def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
     .eyebrow{{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase}} .lede{{color:var(--muted);max-width:70ch}}
     section{{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:22px 0;box-shadow:0 8px 26px #24304a0b}}
     .metrics{{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}} .metric{{padding:16px;border-radius:12px;background:#f0efff}}
+    .metric span,.metric strong{{display:block}} .metric strong{{font-size:1.7rem}} .bar-row{{display:grid;grid-template-columns:90px 1fr 52px;gap:12px;align-items:center;margin:12px 0}}
+    .track{{height:12px;background:#eceef3;border-radius:99px;overflow:hidden}} .track i{{display:block;height:100%;background:linear-gradient(90deg,#6657d9,#28a3ae);border-radius:inherit}}
+    table{{width:100%;border-collapse:collapse}} th,td{{padding:13px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}} th{{color:var(--muted);font-size:.8rem;text-transform:uppercase}} td small{{display:block;color:var(--muted)}}
+    .table-wrap{{overflow:auto}} footer{{color:var(--muted);font-size:.9rem;padding:12px 2px}} @media(max-width:620px){{main{{margin:24px auto}}section{{padding:17px}}.bar-row{{grid-template-columns:75px 1fr 44px}}}}
+  </style>
+</head>
+<body><main>
+  <p class="eyebrow">Offline-first analysis</p>
+  <h1>Music emotion report</h1>
+  <p class="lede">{summary['song_count']} songs analyzed. Scores are backend estimates, not objective interpretations of lyrical meaning.</p>
