@@ -178,3 +178,13 @@ def _html(results: list[AnalysisResult], summary: Mapping[str, Any]) -> str:
 
 def generate_report(results: Iterable[AnalysisResult], output_dir: str | Path) -> ReportArtifacts:
     materialized = list(results)
+    summary = summarize(materialized)
+    destination = Path(output_dir)
+    destination.mkdir(parents=True, exist_ok=True)
+    html_path = destination / "report.html"
+    markdown_path = destination / "report.md"
+    summary_path = destination / "summary.json"
+    html_path.write_text(_html(materialized, summary), encoding="utf-8")
+    markdown_path.write_text(_markdown(materialized, summary), encoding="utf-8")
+    summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return ReportArtifacts(html=html_path, markdown=markdown_path, summary_json=summary_path)
