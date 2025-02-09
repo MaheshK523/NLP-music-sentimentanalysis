@@ -18,3 +18,13 @@ def _average(items: Iterable[tuple[Mapping[str, float], int]]) -> dict[str, floa
     for scores, weight in items:
         safe_weight = max(int(weight), 1)
         total_weight += safe_weight
+        for label, score in scores.items():
+            totals[label.casefold()] += float(score) * safe_weight
+    if not totals or total_weight < 1:
+        raise BackendUnavailableError("the Transformers backend returned no emotion scores")
+    averaged = {label: value / total_weight for label, value in totals.items()}
+    total = sum(averaged.values())
+    if not math.isfinite(total) or total <= 0:
+        raise BackendUnavailableError("the Transformers backend returned invalid emotion scores")
+    return {label: value / total for label, value in sorted(averaged.items())}
+
