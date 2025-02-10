@@ -28,3 +28,13 @@ def _average(items: Iterable[tuple[Mapping[str, float], int]]) -> dict[str, floa
         raise BackendUnavailableError("the Transformers backend returned invalid emotion scores")
     return {label: value / total for label, value in sorted(averaged.items())}
 
+
+class TransformersEmotionBackend:
+    name = "transformers"
+
+    def __init__(self, model_name: str = DEFAULT_MODEL, *, allow_download: bool = False) -> None:
+        try:
+            from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
+        except ImportError as exc:
+            raise BackendUnavailableError(
+                "Transformers support is optional. Install it with "
