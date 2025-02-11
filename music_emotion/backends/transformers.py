@@ -38,3 +38,13 @@ class TransformersEmotionBackend:
         except ImportError as exc:
             raise BackendUnavailableError(
                 "Transformers support is optional. Install it with "
+                "`pip install 'music-emotion-analysis[transformers]'`."
+            ) from exc
+
+        local_only = not allow_download
+        try:
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=local_only)
+            model = AutoModelForSequenceClassification.from_pretrained(model_name, local_files_only=local_only)
+        except (OSError, ValueError) as exc:
+            gate = " Pass --allow-model-download to permit a Hugging Face download." if local_only else ""
+            raise BackendUnavailableError(f"could not load Transformers model {model_name!r}.{gate}") from exc
