@@ -48,3 +48,13 @@ class TransformersEmotionBackend:
         except (OSError, ValueError) as exc:
             gate = " Pass --allow-model-download to permit a Hugging Face download." if local_only else ""
             raise BackendUnavailableError(f"could not load Transformers model {model_name!r}.{gate}") from exc
+
+        self.model_name = model_name
+        self.classifier = pipeline(
+            task="text-classification",
+            model=model,
+            tokenizer=self.tokenizer,
+            device=-1,
+        )
+
+    def predict(self, text: str, *, chunk_size: int = 256) -> BackendPrediction:
