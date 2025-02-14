@@ -58,3 +58,13 @@ class TransformersEmotionBackend:
         )
 
     def predict(self, text: str, *, chunk_size: int = 256) -> BackendPrediction:
+        declared_max = int(getattr(self.tokenizer, "model_max_length", 512) or 512)
+        if declared_max > 100_000:
+            declared_max = 512
+        effective_max = min(chunk_size, declared_max)
+        chunks = tokenizer_chunks(self.tokenizer, text, effective_max)
+        try:
+            raw: Any = self.classifier(
+                [chunk.text for chunk in chunks],
+                top_k=None,
+                truncation=True,
