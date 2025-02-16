@@ -68,3 +68,13 @@ class TransformersEmotionBackend:
                 [chunk.text for chunk in chunks],
                 top_k=None,
                 truncation=True,
+            )
+        except Exception as exc:
+            raise BackendUnavailableError(f"Transformers inference failed: {exc}") from exc
+
+        if raw and isinstance(raw[0], dict):
+            raw = [raw]
+        if len(raw) != len(chunks):
+            raise BackendUnavailableError("Transformers returned an unexpected number of chunk predictions")
+
+        chunk_scores: list[tuple[dict[str, float], int]] = []
