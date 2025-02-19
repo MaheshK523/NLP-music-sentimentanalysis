@@ -78,3 +78,7 @@ class TransformersEmotionBackend:
             raise BackendUnavailableError("Transformers returned an unexpected number of chunk predictions")
 
         chunk_scores: list[tuple[dict[str, float], int]] = []
+        for result, chunk in zip(raw, chunks, strict=True):
+            scores = {str(item["label"]).casefold(): float(item["score"]) for item in result}
+            chunk_scores.append((scores, chunk.weight))
+        return BackendPrediction(scores=_average(chunk_scores), chunk_count=len(chunks))
