@@ -18,3 +18,6 @@ def create_backend(
 
         return TransformersEmotionBackend(model_name or DEFAULT_MODEL, allow_download=allow_download)
     raise ValueError(f"unknown backend: {name}")
+
+
+__all__ = ["EmotionBackend", "LexiconEmotionBackend", "create_backend"]
