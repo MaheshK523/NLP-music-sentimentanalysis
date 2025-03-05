@@ -58,3 +58,13 @@ LEXICON: dict[str, tuple[tuple[str, float], ...]] = {
     "sudden": (("surprise", 1.2),),
     "sunrise": (("joy", 1.2),),
     "surprise": (("surprise", 1.7),),
+    "tears": (("sadness", 1.5),),
+    "tremble": (("fear", 1.3),),
+    "unexpected": (("surprise", 1.5),),
+    "vile": (("disgust", 1.6),),
+    "warm": (("joy", 0.9),),
+    "wonder": (("surprise", 1.0), ("joy", 0.5)),
+    "wow": (("surprise", 1.6),),
+}
+
+NEGATIONS = {"aren't", "can't", "didn't", "doesn't", "don't", "never", "no", "not", "wasn't", "won't"}
