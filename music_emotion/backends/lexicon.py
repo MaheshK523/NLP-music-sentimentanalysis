@@ -68,3 +68,13 @@ LEXICON: dict[str, tuple[tuple[str, float], ...]] = {
 }
 
 NEGATIONS = {"aren't", "can't", "didn't", "doesn't", "don't", "never", "no", "not", "wasn't", "won't"}
+INTENSIFIERS = {"deeply": 1.35, "extremely": 1.65, "really": 1.25, "so": 1.2, "very": 1.4}
+NEGATION_TARGETS = {
+    "anger": "fear",
+    "disgust": "neutral",
+    "fear": "neutral",
+    "joy": "sadness",
+    "neutral": "surprise",
+    "sadness": "joy",
+    "surprise": "neutral",
+}
