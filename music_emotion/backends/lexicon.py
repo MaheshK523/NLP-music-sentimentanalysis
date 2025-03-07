@@ -78,3 +78,13 @@ NEGATION_TARGETS = {
     "sadness": "joy",
     "surprise": "neutral",
 }
+
+
+def _normalize(raw: Mapping[str, float]) -> dict[str, float]:
+    total = sum(max(float(raw.get(emotion, 0.0)), 0.0) for emotion in EMOTIONS)
+    if total <= 0:
+        return {emotion: (1.0 if emotion == "neutral" else 0.0) for emotion in EMOTIONS}
+    return {emotion: max(float(raw.get(emotion, 0.0)), 0.0) / total for emotion in EMOTIONS}
+
+
+def _score_chunk(text: str) -> dict[str, float]:
