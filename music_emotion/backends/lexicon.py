@@ -88,3 +88,13 @@ def _normalize(raw: Mapping[str, float]) -> dict[str, float]:
 
 
 def _score_chunk(text: str) -> dict[str, float]:
+    words = tokenize_words(text)
+    raw = {emotion: 0.04 for emotion in EMOTIONS}
+    raw["neutral"] = 0.20
+
+    for index, word in enumerate(words):
+        entries = LEXICON.get(word, ())
+        if not entries:
+            continue
+        multiplier = INTENSIFIERS.get(words[index - 1], 1.0) if index else 1.0
+        context = words[max(0, index - 2) : index]
