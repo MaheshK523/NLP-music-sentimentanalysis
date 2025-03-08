@@ -98,3 +98,13 @@ def _score_chunk(text: str) -> dict[str, float]:
             continue
         multiplier = INTENSIFIERS.get(words[index - 1], 1.0) if index else 1.0
         context = words[max(0, index - 2) : index]
+        negated = any(token in NEGATIONS for token in context)
+        for emotion, weight in entries:
+            target = NEGATION_TARGETS[emotion] if negated else emotion
+            raw[target] += weight * multiplier
+
+    raw["surprise"] += min(text.count("!") * 0.10 + text.count("?") * 0.05, 0.4)
+    return _normalize(raw)
+
+
+def _weighted_average(items: Iterable[tuple[Mapping[str, float], int]]) -> dict[str, float]:
