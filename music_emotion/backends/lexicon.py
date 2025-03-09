@@ -108,3 +108,13 @@ def _score_chunk(text: str) -> dict[str, float]:
 
 
 def _weighted_average(items: Iterable[tuple[Mapping[str, float], int]]) -> dict[str, float]:
+    totals: defaultdict[str, float] = defaultdict(float)
+    total_weight = 0
+    for scores, weight in items:
+        safe_weight = max(int(weight), 1)
+        total_weight += safe_weight
+        for label, score in scores.items():
+            totals[label] += float(score) * safe_weight
+    return _normalize({label: value / max(total_weight, 1) for label, value in totals.items()})
+
+
