@@ -118,3 +118,11 @@ def _weighted_average(items: Iterable[tuple[Mapping[str, float], int]]) -> dict[
     return _normalize({label: value / max(total_weight, 1) for label, value in totals.items()})
 
 
+class LexiconEmotionBackend:
+    name = "lexicon"
+    model_name = "music-emotion-lexicon-v1"
+
+    def predict(self, text: str, *, chunk_size: int = 200) -> BackendPrediction:
+        chunks = word_chunks(text, chunk_size)
+        scores = _weighted_average((_score_chunk(chunk.text), chunk.weight) for chunk in chunks)
+        return BackendPrediction(scores=scores, chunk_count=len(chunks))
