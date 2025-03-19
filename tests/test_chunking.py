@@ -18,3 +18,13 @@ class ChunkingTest(unittest.TestCase):
     def test_word_tokenization_is_unicode_and_contraction_aware(self):
         self.assertEqual(tokenize_words("Café, DON'T stop 42 times."), ["café", "don't", "stop", "times"])
 
+    def test_word_chunks_cover_every_word(self):
+        chunks = word_chunks("one two three four five", 2)
+        self.assertEqual([chunk.weight for chunk in chunks], [2, 2, 1])
+        self.assertEqual(" ".join(chunk.text for chunk in chunks), "one two three four five")
+
+    def test_tokenizer_chunks_reserve_special_token_budget(self):
+        chunks = tokenizer_chunks(FakeTokenizer(), "one two three four five six seven eight nine", 6)
+        self.assertEqual([chunk.weight for chunk in chunks], [4, 4, 1])
+        self.assertEqual(chunks[0].text, "token-1 token-2 token-3 token-4")
+
