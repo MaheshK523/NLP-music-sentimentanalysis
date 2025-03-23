@@ -28,3 +28,12 @@ class ChunkingTest(unittest.TestCase):
         self.assertEqual([chunk.weight for chunk in chunks], [4, 4, 1])
         self.assertEqual(chunks[0].text, "token-1 token-2 token-3 token-4")
 
+    def test_invalid_chunk_size_fails(self):
+        with self.assertRaises(ValueError):
+            word_chunks("text", 0)
+        with self.assertRaises(ValueError):
+            tokenizer_chunks(FakeTokenizer(), "text", 2)
+
+
+if __name__ == "__main__":
+    unittest.main()
