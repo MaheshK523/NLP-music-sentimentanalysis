@@ -18,3 +18,13 @@ class InputOutputTest(unittest.TestCase):
             path.write_text("title,artist,lyrics,collection\nA,B,happy song,demo\n", encoding="utf-8")
             records = load_songs(path)
         self.assertEqual(len(records), 1)
+        self.assertEqual(records[0].extra["collection"], "demo")
+
+    def test_jsonl_requires_string_fields(self):
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            path = Path(raw_tmp) / "songs.jsonl"
+            path.write_text(json.dumps({"title": "A", "artist": 7, "lyrics": "text"}) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(DataValidationError, "artist.*string"):
+                load_songs(path)
+
+    def test_csv_rejects_duplicate_headers(self):
