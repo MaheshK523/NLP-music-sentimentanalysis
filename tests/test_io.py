@@ -28,3 +28,13 @@ class InputOutputTest(unittest.TestCase):
                 load_songs(path)
 
     def test_csv_rejects_duplicate_headers(self):
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            path = Path(raw_tmp) / "songs.csv"
+            path.write_text("title,title,artist,lyrics\nA,A,B,text\n", encoding="utf-8")
+            with self.assertRaisesRegex(DataValidationError, "duplicate"):
+                load_songs(path)
+
+    def test_csv_round_trip_uses_json_encoded_scores(self):
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            source = root / "songs.csv"
