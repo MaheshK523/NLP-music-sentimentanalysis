@@ -38,3 +38,13 @@ class InputOutputTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             source = root / "songs.csv"
+            target = root / "analysis.csv"
+            source.write_text("title,artist,lyrics\nA,B,love and joy\n", encoding="utf-8")
+            results = list(analyze_records(load_songs(source), LexiconEmotionBackend()))
+            self.assertEqual(write_results(results, target), 1)
+            with target.open(encoding="utf-8", newline="") as handle:
+                row = next(csv.DictReader(handle))
+            self.assertIsInstance(json.loads(row["emotion_scores"]), dict)
+            self.assertIsInstance(json.loads(row["dominant_emotions"]), list)
+            restored = load_analysis_results(target)
+        self.assertEqual(restored[0].dominant_emotions, results[0].dominant_emotions)
