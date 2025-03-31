@@ -58,3 +58,13 @@ class InputOutputTest(unittest.TestCase):
             source.write_text(
                 json.dumps({"title": "A", "artist": "B", "lyrics": "sudden surprise"}) + "\n",
                 encoding="utf-8",
+            )
+            results = list(analyze_records(load_songs(source), LexiconEmotionBackend()))
+            write_results(results, target)
+            row = json.loads(target.read_text(encoding="utf-8"))
+        self.assertIsInstance(row["emotion_scores"], dict)
+        self.assertIsInstance(row["dominant_emotions"], list)
+
+
+if __name__ == "__main__":
+    unittest.main()
