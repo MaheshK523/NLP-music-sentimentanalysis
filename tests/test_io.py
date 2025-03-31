@@ -48,3 +48,13 @@ class InputOutputTest(unittest.TestCase):
             self.assertIsInstance(json.loads(row["dominant_emotions"]), list)
             restored = load_analysis_results(target)
         self.assertEqual(restored[0].dominant_emotions, results[0].dominant_emotions)
+        self.assertAlmostEqual(sum(restored[0].emotion_scores.values()), 1.0)
+
+    def test_jsonl_round_trip_keeps_native_json_values(self):
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            source = root / "songs.jsonl"
+            target = root / "analysis.jsonl"
+            source.write_text(
+                json.dumps({"title": "A", "artist": "B", "lyrics": "sudden surprise"}) + "\n",
+                encoding="utf-8",
