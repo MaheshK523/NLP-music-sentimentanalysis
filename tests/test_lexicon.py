@@ -18,3 +18,13 @@ class LexiconBackendTest(unittest.TestCase):
 
     def test_negation_redirects_a_positive_match(self):
         prediction = self.backend.predict("I am not happy", chunk_size=100)
+        self.assertGreater(prediction.scores["sadness"], prediction.scores["joy"])
+
+    def test_long_text_uses_multiple_chunks(self):
+        prediction = self.backend.predict("love bright calm dark lonely surprise", chunk_size=2)
+        self.assertEqual(prediction.chunk_count, 3)
+        self.assertAlmostEqual(sum(prediction.scores.values()), 1.0)
+
+    def test_unknown_text_has_a_neutral_fallback_distribution(self):
+        prediction = self.backend.predict("quasar zephyr", chunk_size=50)
+        self.assertEqual(max(prediction.scores, key=prediction.scores.get), "neutral")
