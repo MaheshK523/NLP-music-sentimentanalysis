@@ -28,3 +28,7 @@ class LexiconBackendTest(unittest.TestCase):
     def test_unknown_text_has_a_neutral_fallback_distribution(self):
         prediction = self.backend.predict("quasar zephyr", chunk_size=50)
         self.assertEqual(max(prediction.scores, key=prediction.scores.get), "neutral")
+
+
+if __name__ == "__main__":
+    unittest.main()
