@@ -28,3 +28,13 @@ class PipelineTest(unittest.TestCase):
             with redirect_stdout(StringIO()):
                 status = main(
                     [
+                        "analyze",
+                        str(REPO_ROOT / "examples" / "sample_songs.csv"),
+                        "--output",
+                        str(analysis_path),
+                        "--report-dir",
+                        str(report_dir),
+                        "--chunk-size",
+                        "4",
+                    ]
+                )
