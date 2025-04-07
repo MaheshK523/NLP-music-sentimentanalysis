@@ -38,3 +38,13 @@ class PipelineTest(unittest.TestCase):
                         "4",
                     ]
                 )
+            self.assertEqual(status, 0)
+            self.assertTrue(analysis_path.is_file())
+            self.assertIn("Music emotion report", (report_dir / "report.html").read_text(encoding="utf-8"))
+            summary = json.loads((report_dir / "summary.json").read_text(encoding="utf-8"))
+            self.assertEqual(summary["song_count"], 4)
+
+            rebuilt = root / "rebuilt"
+            with redirect_stdout(StringIO()):
+                status = main(["report", str(analysis_path), "--output-dir", str(rebuilt)])
+            self.assertEqual(status, 0)
