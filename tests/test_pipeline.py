@@ -48,3 +48,13 @@ class PipelineTest(unittest.TestCase):
             with redirect_stdout(StringIO()):
                 status = main(["report", str(analysis_path), "--output-dir", str(rebuilt)])
             self.assertEqual(status, 0)
+            self.assertTrue((rebuilt / "report.md").is_file())
+
+    def test_model_download_flag_is_rejected_for_offline_backend(self):
+        stderr = StringIO()
+        with tempfile.TemporaryDirectory() as raw_tmp, redirect_stderr(stderr):
+            status = main(
+                [
+                    "analyze",
+                    str(REPO_ROOT / "examples" / "sample_songs.csv"),
+                    "--output",
