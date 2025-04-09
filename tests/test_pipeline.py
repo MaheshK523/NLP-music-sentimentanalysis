@@ -58,3 +58,13 @@ class PipelineTest(unittest.TestCase):
                     "analyze",
                     str(REPO_ROOT / "examples" / "sample_songs.csv"),
                     "--output",
+                    str(Path(raw_tmp) / "analysis.csv"),
+                    "--allow-model-download",
+                ]
+            )
+        self.assertEqual(status, 2)
+        self.assertIn("only applies", stderr.getvalue())
+
+
+if __name__ == "__main__":
+    unittest.main()
