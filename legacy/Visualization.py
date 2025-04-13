@@ -8,3 +8,11 @@ for moods in dominant_moods:
 
 plt.figure(figsize=(8,6))
 plt.bar(mood_counts.keys(), mood_counts.values())
+plt.title("distribution of dominant moods across songs")
+plt.xlabel("mood")
+plt.ylabel("count")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("mood_distribution.png")
+plt.close()
+print("saved overall mood distribution as mood_distribution.png")
