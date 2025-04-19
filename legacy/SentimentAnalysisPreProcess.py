@@ -18,3 +18,6 @@ def get_song_mood(lyrics, threshold=0.25):
     results = mood_classifier(lyrics_clean)
     mood_scores = {res['label']: res['score'] for res in results[0]}
     dominant_moods = [label for label, score in mood_scores.items() if score >= threshold]
+    if not dominant_moods:
+        dominant_moods = [max(mood_scores, key=mood_scores.get)]
+    return dominant_moods, mood_scores
