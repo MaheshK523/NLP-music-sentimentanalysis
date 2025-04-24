@@ -18,3 +18,13 @@ matched term.
 
 Each chunk starts with smoothing weights so unknown text remains valid rather
 than producing an empty result. Chunk distributions are averaged by token
+count and normalized to sum to one. This is an inspectable smoke-test baseline,
+not a trained classifier and not a substitute for human annotation.
+
+## Long-text handling
+
+The lexicon backend chunks by normalized words. The optional Transformers
+backend uses the selected tokenizer's token IDs, reserves the tokenizer's
+special-token budget, and decodes non-overlapping chunks that fit within both
+the requested size and the model's declared maximum length. Per-chunk model
+distributions are averaged by model-token count.
