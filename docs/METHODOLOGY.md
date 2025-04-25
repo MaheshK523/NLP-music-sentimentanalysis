@@ -38,3 +38,13 @@ The lexicon backend performs no random sampling, network access, or model
 download. Given the same package version, text, chunk size, and threshold, its
 output is deterministic. JSON keys and CSV score objects are serialized in a
 stable order.
+
+Transformer output depends on the downloaded model revision, Transformers and
+PyTorch versions, hardware kernels, and local cache. Record those details when
+publishing derived results.
+
+## Evaluation needed before research claims
+
+A defensible evaluation should define a licensed, independently labeled test
+set; an annotation protocol; inter-rater agreement; per-label precision,
+recall, and F1; calibration; multilingual coverage; and error analysis for
