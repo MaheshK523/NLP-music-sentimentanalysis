@@ -28,3 +28,13 @@ backend uses the selected tokenizer's token IDs, reserves the tokenizer's
 special-token budget, and decodes non-overlapping chunks that fit within both
 the requested size and the model's declared maximum length. Per-chunk model
 distributions are averaged by model-token count.
+
+This avoids silently truncating an entire lyric to its opening segment. The
+current aggregation does not model narrative order across chunks.
+
+## Determinism
+
+The lexicon backend performs no random sampling, network access, or model
+download. Given the same package version, text, chunk size, and threshold, its
+output is deterministic. JSON keys and CSV score objects are serialized in a
+stable order.
