@@ -48,3 +48,5 @@ publishing derived results.
 A defensible evaluation should define a licensed, independently labeled test
 set; an annotation protocol; inter-rater agreement; per-label precision,
 recall, and F1; calibration; multilingual coverage; and error analysis for
+figurative language, negation, repetition, and long-range context. None of
+those measurements are currently claimed by this repository.
