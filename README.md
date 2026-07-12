@@ -1,35 +1,53 @@
+# Music Emotion Analysis
 
-This project uses Natural Language Processing (NLP) to analyze the emotional
-mood of song lyrics. By using text preprocessing, a fine-tuned DistilRoBERTa
-emotion classifier, and data visualization, the system transforms some lyrics
-into structured emotional ideas.
+A Python prototype that maps song lyrics to emotion scores and produces dataset-level and per-song visualizations.
 
-Final product is the intellectual property of Stanford NLP Group.
+The project uses the existing Hugging Face checkpoint `j-hartmann/emotion-english-distilroberta-base`. The model is loaded for inference; this repository does not train or fine-tune DistilRoBERTa.
 
-Preprocessing
-   - Converts lyrics to lowercase
-   - Removes punctuation
-   - Removes whitespace
- 
+## Pipeline
 
-NLP Classification
-   - Uses Hugging Face DistilRoBERTa model trained for multi-emotion detection
-   - Generates probability scores for emotions such as joy, sadness, anger, love, fear
-   - Applies a threshold (default ≥ 0.25) to capture many dominant moods, if necessary
-   - Falls back to single highest-scoring mood if no score crosses threshold
+1. Convert lyrics to lowercase.
+2. Remove non-letter characters and collapse repeated whitespace.
+3. Run the text through the pretrained emotion-classification pipeline.
+4. Retain every emotion at or above a configurable threshold (`0.25` by default).
+5. Fall back to the highest-scoring emotion when no score crosses the threshold.
+6. Add dominant-emotion and full-score columns to a CSV dataset.
+7. Generate an aggregate bar chart and one radar chart per song.
 
-Batch Processing
-   - Reads input from CSV file (song_lyrics.csv) with title, artist, lyrics
-   - Processes lyrics in batches to go quicker and be more efficient
-   - Outputs results with two new columns:
-       * dominant_moods → list of strongest moods
-       * mood_scores → dictionary of all emotion probabilities
-   - Saves annotated dataset to song_lyrics_mood_analysis.csv
+The expected input described by the scripts is `song_lyrics.csv`, with title, artist, and lyrics fields. The annotated output is written as `song_lyrics_mood_analysis.csv`.
 
-Visualizations
-   - bar chart (mood_distribution.png)
-       * Summarizes frequency of each dominant mood across the dataset
-   - Per-song radar charts (mood_charts/*.png)
-       * Shows full emotional moods and ideas of each song
-       * One chart saved per track with all mood intensities plotted
+## Repository map
 
+| File | Purpose |
+|---|---|
+| [`SentimentAnalysisPreProcess.py`](SentimentAnalysisPreProcess.py) | Text cleanup and model inference |
+| [`DominantMood.py`](DominantMood.py) | Batch processing and dominant-emotion selection |
+| [`Visualization.py`](Visualization.py) | Dataset-level emotion distribution |
+| [`Radar_Chart.py`](Radar_Chart.py) | Per-song radar charts |
+| [`requirements`](requirements) | Python dependency list |
+
+## Outputs
+
+The batch pipeline adds:
+
+- `dominant_moods`: emotions that meet the selected threshold;
+- `mood_scores`: the complete classifier score mapping.
+
+Visualization scripts produce:
+
+- `mood_distribution.png` for aggregate dominant-emotion counts;
+- files under `mood_charts/` for per-song score profiles.
+
+## Limitations
+
+- The checkpoint is an existing English emotion classifier, not a model trained on this repository's song-lyrics data.
+- Classifier scores are model outputs, not objective measurements of a song's emotional meaning.
+- The `0.25` cutoff is a heuristic and has not been calibrated against a labeled evaluation set in this repository.
+- Lowercasing and removing punctuation or non-ASCII letters may discard useful signals, especially for multilingual lyrics, names, contractions, and stylistic punctuation.
+- The code does not define a chunking or truncation policy for lyrics that exceed the classifier's input length.
+- No labeled dataset, train/test split, accuracy measurement, error analysis, or human evaluation is included.
+- The scripts are separate modules rather than one documented command-line entry point.
+
+## Data and usage rights
+
+No lyric dataset is checked into the repository. Anyone using the pipeline is responsible for ensuring they have permission to process and store the lyrics they provide, as well as for following the pretrained model's license and usage terms.
